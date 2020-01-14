@@ -22,24 +22,25 @@ vector<double> polynome4(double a,double b,double c, double d, double e);
 
 int main(){
 	vector<double> v;
-	v.push_back(7);
-	v.push_back(8);
-	v.push_back(-3);
-	v.push_back(1);
+    v.push_back(-6);
+    v.push_back(3);
+    v.push_back(9);
+	v.push_back(-14);
+	v.push_back(-2);
 
 	Polynome p(v);
 
 	vector<double> CoeffDeBernstein = canonicToBernstein(p);
-	// vector<double> CoeffDeBernsteinIntervalle = ChangementIntervalle(CoeffDeBernstein, -3,3);
+    vector<vector<double> > PtsdeControles = PtsDeControle(CoeffDeBernstein, 0, 1); 
 
- //    for(double i = 0; i < CoeffDeBernstein.size();i++)
- //    {
- //        cout << "x" << i+1 << " = " << CoeffDeBernstein[i] << endl;
- //    }
-	// cout <<endl<< endl;
+    // for(double i=0; i<PtsdeControles.size(); i++){
+    //  for(double j=0; j<2; j++){
+    //      cout << PtsdeControles[i][j] << " ";
+    //  }
+    //  cout << endl;
+    // }
 
-
-	vector<vector<double> > PtsdeControles = PtsDeControle(CoeffDeBernstein, 0, 1); 
+    // cout 	vector<vector<double> > PtsdeControles1 = PtsDeControle(CoeffDeBernsteinIntervalle, 0, 1); 
 
 	// for(double i=0; i<PtsdeControles.size(); i++){
 	// 	for(double j=0; j<2; j++){
@@ -47,17 +48,76 @@ int main(){
 	// 	}
 	// 	cout << endl;
 	// }
+    double precision = 0.0001;
 
-	vector<double> res = CastelJau(PtsdeControles, 0,1);
+	vector<double> res = CastelJau(PtsdeControles, precision, false, false);
 
 
-	// cout << "bexier   " <<    Bezier(PtsdeControles, -3,3) << endl;
-    cout << "Il y a " << res.size() << " solutions dans R :" << endl;
+    // Bezier(PtsdeControles, 0,1, 0.00000001, false, false);
+
+    // vector<double> res = returnVector();
+    cout << "Il y a " << res.size() << " solutions dans [0,1] :" << endl;
     for(double i = 0; i < res.size();i++)
     {
         cout << "x" << i+1 << " = " << res[i] << endl;
     }
 	cout <<endl<< endl;
+
+
+    vector<double> CoeffDeBernstein1 = canonicToBernstein(ChangementIntervalle(v, true, false));
+    vector<vector<double> > PtsdeControles1 = PtsDeControle(CoeffDeBernstein1, 0, 1); 
+    vector<double> res1 = CastelJau(PtsdeControles1, precision, true, false);
+
+    // Bezier(PtsdeControles1, 0,1, 0.00000001, true, false);
+    
+    vector<double> CoeffDeBernstein2 = canonicToBernstein(ChangementIntervalle(v, false, true));
+
+    
+
+    vector<vector<double> > PtsdeControles2 = PtsDeControle(CoeffDeBernstein2, 0, 1); 
+    vector<double> res2 = CastelJau(PtsdeControles2, precision, false, true);
+
+    // Bezier(PtsdeControles2, 0,1, 0.00000001, false, true);
+
+    vector<double> CoeffDeBernstein3 = canonicToBernstein(ChangementIntervalle(v, true, true));
+
+    
+
+    vector<vector<double> > PtsdeControles3 = PtsDeControle(CoeffDeBernstein3, 0, 1); 
+    vector<double> res3 = CastelJau(PtsdeControles3, precision, true, true);
+    // Bezier(PtsdeControles3, 0,1, 0.00000001, true, true);
+
+    // vector<double> res = returnVector();
+    // res = returnVector();
+    cout << "Il y a " << res1.size() << " solutions dans [1,+inf[:" << endl;
+    for(double i = 0; i < res1.size();i++)
+    {
+        cout << "x" << i+1 << " = " << res1[i] << endl;
+    }
+    cout <<endl<< endl;
+    cout << "Il y a " << res2.size() << " solutions dans [-1,0] :" << endl;
+    for(double i = 0; i < ChangementIntervalle(v, true, false).size();i++)
+    {
+        cout << "coeff" << i+1 << " = " << ChangementIntervalle(v, false, true)[i] << endl;
+    }
+    cout <<endl<< endl;
+    for(double i = 0; i < res2.size();i++)
+    {
+        cout << "x" << i+1 << " = " << res2[i] << endl;
+    }
+    cout <<endl<< endl;
+    cout << "Il y a " << res3.size() << " solutions dans [-inf, -1] :" << endl;
+    for(double i = 0; i < ChangementIntervalle(v, true, true).size();i++)
+    {
+        cout << "coeff" << i+1 << " = " << ChangementIntervalle(v, true, true)[i] << endl;
+    }
+    cout <<endl<< endl;
+    for(double i = 0; i < res3.size();i++)
+    {
+        cout << "x" << i+1 << " = " << res3[i] << endl;
+    }
+    cout <<endl<< endl;
+
 
 
 	double x,y,z,t,o;
