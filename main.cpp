@@ -4,331 +4,574 @@
 /********************************************************/ 
 /*                    PeterBACHOUR                      */
 
-#include <stdlib.h>
-#define Pi 3.141592654
 #include <iostream>
-#include <cmath>
 #include <string>
-#include <sstream>
 #include <vector>
-#include <fstream>
 using namespace std;
 
-#include "Polynome.h"
 #include "Bernstein.h"
-
-vector<double> polynome3(double a,double b,double c, double d);
-vector<double> polynome4(double a,double b,double c, double d, double e);
+#include "methodeUsuelle.h"
 
 int main(){
-	vector<double> v;
-    v.push_back(-6);
-    v.push_back(3);
-    v.push_back(9);
-	v.push_back(-14);
-	v.push_back(-2);
 
-	Polynome p(v);
-
-	vector<double> CoeffDeBernstein = canonicToBernstein(p);
-    vector<vector<double> > PtsdeControles = PtsDeControle(CoeffDeBernstein, 0, 1); 
-
-    // for(double i=0; i<PtsdeControles.size(); i++){
-    //  for(double j=0; j<2; j++){
-    //      cout << PtsdeControles[i][j] << " ";
-    //  }
-    //  cout << endl;
-    // }
-
-    // cout 	vector<vector<double> > PtsdeControles1 = PtsDeControle(CoeffDeBernsteinIntervalle, 0, 1); 
-
-	// for(double i=0; i<PtsdeControles.size(); i++){
-	// 	for(double j=0; j<2; j++){
-	// 		cout << PtsdeControles[i][j] << " ";
-	// 	}
-	// 	cout << endl;
-	// }
-    double precision = 0.0001;
-
-	vector<double> res = CastelJau(PtsdeControles, precision, false, false);
-
-
-    // Bezier(PtsdeControles, 0,1, 0.00000001, false, false);
-
-    // vector<double> res = returnVector();
-    cout << "Il y a " << res.size() << " solutions dans [0,1] :" << endl;
-    for(double i = 0; i < res.size();i++)
-    {
-        cout << "x" << i+1 << " = " << res[i] << endl;
-    }
-	cout <<endl<< endl;
-
-
-    vector<double> CoeffDeBernstein1 = canonicToBernstein(ChangementIntervalle(v, true, false));
-    vector<vector<double> > PtsdeControles1 = PtsDeControle(CoeffDeBernstein1, 0, 1); 
-    vector<double> res1 = CastelJau(PtsdeControles1, precision, true, false);
-
-    // Bezier(PtsdeControles1, 0,1, 0.00000001, true, false);
-    
-    vector<double> CoeffDeBernstein2 = canonicToBernstein(ChangementIntervalle(v, false, true));
-
-    
-
-    vector<vector<double> > PtsdeControles2 = PtsDeControle(CoeffDeBernstein2, 0, 1); 
-    vector<double> res2 = CastelJau(PtsdeControles2, precision, false, true);
-
-    // Bezier(PtsdeControles2, 0,1, 0.00000001, false, true);
-
-    vector<double> CoeffDeBernstein3 = canonicToBernstein(ChangementIntervalle(v, true, true));
-
-    
-
-    vector<vector<double> > PtsdeControles3 = PtsDeControle(CoeffDeBernstein3, 0, 1); 
-    vector<double> res3 = CastelJau(PtsdeControles3, precision, true, true);
-    // Bezier(PtsdeControles3, 0,1, 0.00000001, true, true);
-
-    // vector<double> res = returnVector();
-    // res = returnVector();
-    cout << "Il y a " << res1.size() << " solutions dans [1,+inf[:" << endl;
-    for(double i = 0; i < res1.size();i++)
-    {
-        cout << "x" << i+1 << " = " << res1[i] << endl;
-    }
-    cout <<endl<< endl;
-    cout << "Il y a " << res2.size() << " solutions dans [-1,0] :" << endl;
-    for(double i = 0; i < ChangementIntervalle(v, true, false).size();i++)
-    {
-        cout << "coeff" << i+1 << " = " << ChangementIntervalle(v, false, true)[i] << endl;
-    }
-    cout <<endl<< endl;
-    for(double i = 0; i < res2.size();i++)
-    {
-        cout << "x" << i+1 << " = " << res2[i] << endl;
-    }
-    cout <<endl<< endl;
-    cout << "Il y a " << res3.size() << " solutions dans [-inf, -1] :" << endl;
-    for(double i = 0; i < ChangementIntervalle(v, true, true).size();i++)
-    {
-        cout << "coeff" << i+1 << " = " << ChangementIntervalle(v, true, true)[i] << endl;
-    }
-    cout <<endl<< endl;
-    for(double i = 0; i < res3.size();i++)
-    {
-        cout << "x" << i+1 << " = " << res3[i] << endl;
-    }
-    cout <<endl<< endl;
-
-
-
-	double x,y,z,t,o;
+    cout << "Le but de code est la résolution, dans R, d'équations polynomiales de degré 3 à 5 en comparant" << endl <<"le solveur de Bernstein aux méthodes usuelles." << endl;
+    cout << "Code conçu par BACHOUR Peter et ATANGANA Oliver." << endl;
+    double precision = 0;
+	double a =0,b=0,c=0,d=0,e=0,f=0;
+    string degree;
     string choice;
+    vector<double> resUsuelle;
+    vector<double> resBernstein;
+    bool undo = true;
+    bool first = true;
+    bool tolerance = true;
+    bool testing = true;
+    bool otherTest = true;
 
-    cout<<"Bonjour et bon travail"<<endl;
-    cout<< endl;
-    cout<< endl;
-    cout << "Please choose what method you want to use:" << endl;
-    cout << "1 - Méthode de résolution d'équation polynomial de degré 3." << endl;
-    cout << "2 - Méthode de résolution d'équation polynomial de degré 4." << endl;
-    cout << "3 - Méthode de Bernstein avec le degré 3." << endl;
-    cout << "4 - Méthode de Bernstein avec le degré 4." << endl;
-    cout << "5 - Méthode de Bernstein avec le degré 5." << endl;
-    cin>>choice;
-    if(choice == "1"){
-        cout  << "Vous avez choisi de résoudre une équation polynomial de degré 3 donc enter your coefficient : "<<endl;
-        cout << "a = ";
-        cin>>x;
-        cout << "b = ";
-        cin>>y;
-        cout << "c = ";
-        cin>>z;
-        cout << "d = ";
-        cin>>t;
-        vector<double> res = polynome3(x,y, z, t); 
-        if(res.size() != 0) {
-
-            cout << "Il y a " << res.size() << " solutions dans R :" << endl;
-            for(double i = 0; i < res.size();i++)
+    cout << endl;
+    while(testing){
+        cout << "Veuillez choisir parmi les deux options ci-dessous:" << endl;
+        cout << "1- Exemple pertinent." << endl;
+        cout << "2- Tester le code à l'aide d'une saisie au clavier." << endl;
+        cout << endl;
+        cin >> choice;
+        cout << endl;
+        int d1 = choice.compare("1"); 
+        int d2 = choice.compare("2"); 
+        if(d1 == 0){
+            while(otherTest)
             {
-                cout << "x" << i+1 << " = " << res[i] << endl;
+                otherTest = false;
+                cout << "Vous avez choisi le test d'exemple pertinent." << endl;
+                cout << "1- Vous voulez tester avec des exemples de degré 3" << endl;
+                cout << "2- Vous voulez tester avec des exemples de degré 4" << endl;
+                cout << "3- Vous voulez tester avec des exemples de degré 5" << endl;
+                cout << endl;
+                cin>>choice;
+                cout << endl;
+                int t1 = choice.compare("1"); 
+                int t2 = choice.compare("2"); 
+                int t3 = choice.compare("3"); 
+
+                if(t1 == 0){
+                    cout << "--> Exemple de degré 3 numero 1: " << endl;
+                    cout << endl;
+                    double a = -1;
+                    double b = 8;
+                    double c = 1;
+                    double d = -1;
+                    double prec = 0.001;
+                    cout << "L'équation est de la forme: f(x)= " << a << "x^3 + " << b << "x^2 + " << c << "x + " << d << ". " << endl;
+                    cout << "Résolution de f(x)=0 dans R avec une approximation de " << prec << "." << endl;
+                    cout << endl;
+
+                    vector<double> v;
+                    v.push_back(d);
+                    v.push_back(c);
+                    v.push_back(b);
+                    v.push_back(a);
+
+                    resUsuelle = polynome3(v); 
+                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    cout << endl;
+                    resBernstein = Bernstein(v, prec);
+                    if(resBernstein.size() != 0){
+                        cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
+                        for(double i = 0; i < resUsuelle.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
+                        }
+                        cout << endl;
+                        cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
+                        for(double i = 0; i < resBernstein.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resBernstein[i] << endl;
+                        }
+                    }
+                    else {
+                        cout << "Pas de solution dans R." << endl;
+                    }
+                    cout << endl << endl;
+                    cout << "--> Exemple de degré 3 numero 2: " << endl;
+                    cout << endl;
+                    a = 1;
+                    b = 2;
+                    c = 3;
+                    d = 4;
+                    prec = 0.0001;
+                    cout << "L'équation est de la forme: f(x)= " << a << "x^3 + " << b << "x^2 + " << c << "x + " << d << ". " << endl;
+                    cout << "Résolution de f(x)=0 dans R avec une approximation de " << prec << "." << endl;
+                    cout << endl;
+
+                    vector<double> v1;
+                    v1.push_back(d);
+                    v1.push_back(c);
+                    v1.push_back(b);
+                    v1.push_back(a);
+
+                    resUsuelle = polynome3(v1); 
+                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    cout << endl;
+                    resBernstein = Bernstein(v1, prec);
+                    if(resBernstein.size() != 0){
+                        cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
+                        for(double i = 0; i < resUsuelle.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
+                        }
+                        cout << endl;
+                        cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
+                        for(double i = 0; i < resBernstein.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resBernstein[i] << endl;
+                        }
+                    }
+                    else {
+                        cout << "Pas de solution dans R." << endl;
+                    }
+                }
+                if(t2 == 0){
+                    cout << "--> Exemple de degré 4 numero 1: " << endl;
+                    cout << endl;
+                    double a = -1;
+                    double b = 2;
+                    double c = 3;
+                    double d = -4;
+                    double e = -0.5;
+                    double prec = 0.001;
+                    cout << "Votre équation est de la forme: f(x)= " << a << "x^4 + " << b << "x^3 + " << c << "x^2 + " << d << "x + " << e << ". " << endl;
+                    cout << "Résolution de f(x)=0 dans R avec une approximation de " << prec << "." << endl;
+                    cout << endl;
+
+                    vector<double> v;
+                    v.push_back(e);
+                    v.push_back(d);
+                    v.push_back(c);
+                    v.push_back(b);
+                    v.push_back(a);
+
+                    resUsuelle = polynome4(v); 
+                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    cout << endl;
+                    resBernstein = Bernstein(v, prec);
+                    if(resBernstein.size() != 0){
+                        cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
+                        for(double i = 0; i < resUsuelle.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
+                        }
+                        cout << endl;
+                        cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
+                        for(double i = 0; i < resBernstein.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resBernstein[i] << endl;
+                        }
+                    }
+                    else {
+                        cout << "Pas de solution dans R." << endl;
+                    }
+                    cout << endl << endl;
+                    cout << "--> Exemple de degré 4 numero 2: " << endl;
+                    cout << endl;
+                    a = 1;
+                    b = 8;
+                    c = 3;
+                    d = 9;
+                    e = -5;
+                    prec = 0.0001;
+                    cout << "Votre équation est de la forme: f(x)= " << a << "x^4 + " << b << "x^3 + " << c << "x^2 + " << d << "x + " << e << ". " << endl;
+                    cout << "Résolution de f(x)=0 dans R avec une approximation de " << prec << "." << endl;
+                    cout << endl;
+
+                    vector<double> v1;
+                    v1.push_back(e);
+                    v1.push_back(d);
+                    v1.push_back(c);
+                    v1.push_back(b);
+                    v1.push_back(a);
+
+                    resUsuelle = polynome4(v1); 
+                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    cout << endl;
+                    resBernstein = Bernstein(v1, prec);
+                    if(resBernstein.size() != 0){
+                        cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
+                        for(double i = 0; i < resUsuelle.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
+                        }
+                        cout << endl;
+                        cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
+                        for(double i = 0; i < resBernstein.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resBernstein[i] << endl;
+                        }
+                    }
+                    else {
+                        cout << "Pas de solution dans R." << endl;
+                    }
+                }
+                if(t3 == 0){
+                    cout << "--> Exemple de degré 5 numero 1: " << endl;
+                    cout << endl;
+                    double a = -2;
+                    double b = 2;
+                    double c = 5;
+                    double d = -8;
+                    double e = 9;
+                    double f = 3;
+                    double prec = 0.001;
+                    cout << "Votre équation est de la forme: f(x)= " << a << "x^5 + " << b << "x^4 + " << c << "x^3 + " << d << "x^2 + " << e << "x + " << f << ". " << endl;
+                    cout << "Résolution de f(x)=0 dans R avec une approximation de " << prec << "." << endl;
+                    cout << endl;
+
+                    vector<double> v;
+                    v.push_back(f);
+                    v.push_back(e);
+                    v.push_back(d);
+                    v.push_back(c);
+                    v.push_back(b);
+                    v.push_back(a);
+
+                    resUsuelle = polynome5(v); 
+                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    cout << endl;
+                    resBernstein = Bernstein(v, prec);
+                    if(resBernstein.size() != 0){
+                        cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
+                        for(double i = 0; i < resUsuelle.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
+                        }
+                        cout << endl;
+                        cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
+                        for(double i = 0; i < resBernstein.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resBernstein[i] << endl;
+                        }
+                    }
+                    else {
+                        cout << "Pas de solution dans R." << endl;
+                    }
+                    cout << endl << endl;
+                    cout << "--> Exemple de degré 5 numero 2: " << endl;
+                    cout << endl;
+                    a = 1;
+                    b = -4;
+                    c = 2;
+                    d = 2;
+                    e = -4;
+                    f = 6;
+                    prec = 0.0001;
+                    cout << "Votre équation est de la forme: f(x)= " << a << "x^5 + " << b << "x^4 + " << c << "x^3 + " << d << "x^2 + " << e << "x + " << f << ". " << endl;
+                    cout << "Résolution de f(x)=0 dans R avec une approximation de " << prec << "." << endl;
+                    cout << endl;
+
+                    vector<double> v1;
+                    v1.push_back(f);
+                    v1.push_back(e);
+                    v1.push_back(d);
+                    v1.push_back(c);
+                    v1.push_back(b);
+                    v1.push_back(a);
+
+                    resUsuelle = polynome5(v1); 
+                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    cout << endl;
+                    resBernstein = Bernstein(v1, prec);
+                    if(resBernstein.size() != 0){
+                        cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
+                        for(double i = 0; i < resUsuelle.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
+                        }
+                        cout << endl;
+                        cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
+                        for(double i = 0; i < resBernstein.size();i++)
+                        {
+                            cout << "x" << i+1 << " = " << resBernstein[i] << endl;
+                        }
+                    }
+                    else {
+                        cout << "Pas de solution dans R." << endl;
+                    }
+                }
+                cout << endl;
+                cout << "Est ce que vous souhaitez tester un autre degré? (o/n)" << endl;
+                cin>>choice;
+                if(choice == "o")
+                    otherTest = true;
+                else{
+                    otherTest = false;
+                }
             }
         }
+        if(d2 ==0)
+            while(first){
+            first = false;
+            undo = true;
+            tolerance = true;
+            cout << "Vous avez choisi la saisie au clavier." << endl;
+            cout << "Veuillez saisir le degré du pôlynome que vous souhaitez résoudre:" << endl;
+            cout << endl;
+            cin >> degree;
+            cout << endl;
+
+            int d3 = degree.compare("3"); 
+            int d4 = degree.compare("4"); 
+            int d5 = degree.compare("5"); 
+            while (d3 != 0 && d4 != 0 && d5 != 0){
+                cout << endl;
+                cout << "Veuillez saisir un degré entre 3 et 5:" << endl;
+                cin >> degree;
+                d3 = degree.compare("3"); 
+                d4 = degree.compare("4"); 
+                d5 = degree.compare("5"); 
+            }
+            if(d3 == 0){
+                while(undo){
+                    tolerance = true;
+                    cout  << "Vous avez choisi de résoudre une équation polynomial de degré 3 donc entrez les coefficients du pôlynome : "<<endl;
+                    cout << "a = ";
+                    cin>>a;
+                    cout << "b = ";
+                    cin>>b;
+                    cout << "c = ";
+                    cin>>c;
+                    cout << "d = ";
+                    cin>>d;
+
+                    cout << "Votre équation est de la forme: f(x)= " << a << "x^3 + " << b << "x^2 + " << c << "x + " << d << ". " << endl;
+                    cout << "Vous souhaitez résoudre f(x)=0 dans R." << endl;
+                    cout << endl;
+
+                    vector<double> v;
+                    v.push_back(d);
+                    v.push_back(c);
+                    v.push_back(b);
+                    v.push_back(a);
+
+                    while(tolerance){
+                        resUsuelle = polynome3(v); 
+                        cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                        cout << endl;
+
+                        cout << endl << "Veuillez saisir la tolérance d'erreur que vous souhaitez:" << endl;
+                        cin>>precision;
+                        cout << "Votre tolérance d'erreur est: " << precision << endl;
+                        cout << endl;
+                        resBernstein = Bernstein(v, precision);
+
+                        if(resBernstein.size() != 0){
+                            cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
+                            for(double i = 0; i < resUsuelle.size();i++)
+                            {
+                                cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
+                            }
+                            cout << endl;
+                            cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
+                            for(double i = 0; i < resBernstein.size();i++)
+                            {
+                                cout << "x" << i+1 << " = " << resBernstein[i] << endl;
+                            }
+                        }
+                        else {
+                            cout << "Pas de solution dans R." << endl;
+                        }
+                        cout << endl;
+                        cout << "Est ce que vous souhaitez changer la tolérance d'erreur? (o/n)" << endl;
+                        cin>>choice;
+                        if(choice == "o")
+                            tolerance = true;
+                        else{
+                            tolerance = false;
+                        }
+                    }
+                    cout << "Est ce que vous souhaitez changer vos coefficients? (o/n)" << endl;
+                    cin>>choice;
+                    if(choice == "o")
+                        undo = true;
+                    else{
+                        undo = false;
+                    }
+                }
+                cout << endl;
+                cout << "Est ce que vous souhaitez changer de degré? (o/n)" << endl;
+                cin>>choice;
+                if(choice == "o")
+                    first = true;
+                else{
+                    first = false;
+                }
+            }
+            if(d4 == 0){
+                while(undo){
+                    tolerance = true;
+                    cout  << "Vous avez choisi de résoudre une équation polynomial de degré 3 donc entrez les coefficients du pôlynome : "<<endl;
+                    cout << "a = ";
+                    cin>>a;
+                    cout << "b = ";
+                    cin>>b;
+                    cout << "c = ";
+                    cin>>c;
+                    cout << "d = ";
+                    cin>>d;
+                    cout << "e = ";
+                    cin>>e;
+                    cout << "Votre équation est de la forme: f(x)= " << a << "x^4 + " << b << "x^3 + " << c << "x^2 + " << d << "x + " << e << ". " << endl;
+                    cout << "Vous souhaitez résoudre f(x)=0 dans R." << endl;
+                    cout << endl;
+                    vector<double> v;
+                    v.push_back(e);
+                    v.push_back(d);
+                    v.push_back(c);
+                    v.push_back(b);
+                    v.push_back(a);
+
+                    while(tolerance){
+                        resUsuelle = polynome4(v); 
+                        cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                        cout << endl;
+
+                        cout << endl << "Veuillez saisir la tolérance d'erreur que vous souhaitez:" << endl;
+                        cin>>precision;
+                        cout << "Votre tolérance d'erreur est: " << precision << endl;
+                        cout << endl;
+                        resBernstein = Bernstein(v, precision);
+
+                        if(resBernstein.size() != 0){
+                            cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
+                            for(double i = 0; i < resUsuelle.size();i++)
+                            {
+                                cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
+                            }
+                            cout << endl;
+                            cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
+                            for(double i = 0; i < resBernstein.size();i++)
+                            {
+                                cout << "x" << i+1 << " = " << resBernstein[i] << endl;
+                            }
+                        }
+                        else {
+                            cout << "Pas de solution dans R." << endl;
+                        }
+                        cout << endl;
+                        cout << "Est ce que vous souhaitez changer la tolérance d'erreur? (o/n)" << endl;
+                        cin>>choice;
+                        if(choice == "o")
+                            tolerance = true;
+                        else{
+                            tolerance = false;
+                        }
+                    }
+                    cout << "Est ce que vous souhaitez changer vos coefficients? (o/n)" << endl;
+                    cin>>choice;
+                    if(choice == "o")
+                        undo = true;
+                    else{
+                        undo = false;
+                    }
+                }
+                cout << endl;
+                cout << "Est ce que vous souhaitez changer de degré? (o/n)" << endl;
+                cin>>choice;
+                if(choice == "o")
+                    first = true;
+                else{
+                    first = false;
+                }
+            }
+            if(d5 == 0){
+                while(undo){
+                    tolerance = true;
+                    cout  << "Vous avez choisi de résoudre une équation polynomial de degré 3 donc entrez les coefficients du pôlynome : "<<endl;
+                    cout << "a = ";
+                    cin>>a;
+                    cout << "b = ";
+                    cin>>b;
+                    cout << "c = ";
+                    cin>>c;
+                    cout << "d = ";
+                    cin>>d;
+                    cout << "e = ";
+                    cin>>e;
+                    cout << "f = ";
+                    cin>>f;
+                    cout << "Votre équation est de la forme: f(x)= " << a << "x^5 + " << b << "x^4 + " << c << "x^3 + " << d << "x^2 + " << e << "x + " << f << ". " << endl;
+                    cout << "Vous souhaitez résoudre f(x)=0 dans R." << endl;
+                    cout << endl;
+                    vector<double> v;
+                    v.push_back(f);
+                    v.push_back(e);
+                    v.push_back(d);
+                    v.push_back(c);
+                    v.push_back(b);
+                    v.push_back(a);
+
+                    while(tolerance){
+                        resUsuelle = polynome5(v); 
+                        cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                        cout << endl;
+
+                        cout << endl << "Veuillez saisir la tolérance d'erreur que vous souhaitez:" << endl;
+                        cin>>precision;
+                        cout << "Votre tolérance d'erreur est: " << precision << endl;
+                        cout << endl;
+                        resBernstein = Bernstein(v, precision);
+
+                        if(resBernstein.size() != 0){
+                            cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
+                            for(double i = 0; i < resUsuelle.size();i++)
+                            {
+                                cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
+                            }
+                            cout << endl;
+                            cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
+                            for(double i = 0; i < resBernstein.size();i++)
+                            {
+                                cout << "x" << i+1 << " = " << resBernstein[i] << endl;
+                            }
+                        }
+                        else {
+                            cout << "Pas de solution dans R." << endl;
+                        }
+                        cout << endl;
+                        cout << "Est ce que vous souhaitez changer la tolérance d'erreur? (o/n)" << endl;
+                        cin>>choice;
+                        if(choice == "o")
+                            tolerance = true;
+                        else{
+                            tolerance = false;
+                        }
+                    }
+
+                    cout << "Est ce que vous souhaitez changer vos coefficients? (o/n)" << endl;
+                    cin>>choice;
+                    if(choice == "o")
+                        undo = true;
+                    else{
+                        undo = false;
+                    }
+                }
+                cout << endl;
+                cout << "Est ce que vous souhaitez changer de degré? (o/n)" << endl;
+                cin>>choice;
+                if(choice == "o")
+                    first = true;
+                else{
+                    first = false;
+                }
+    	    }
+        }
+        cout << endl;
+        cout << "Est ce que vous souhaitez retourner au menu principal? (o/n)" << endl;
+        cin>>choice;
+        cout << endl;
+        if(choice == "o")
+            testing = true;
         else{
-            cout << "Pas de solution dans R" << endl;
+            testing = false;
         }
     }
-    else if (choice == "2"){
-        cout  <<"Vous avez choisi de résoudre une équation polynomial de degré 4 donc enter your coefficient : "<<endl;
-        cout << "a = ";
-        cin>>x;
-        cout << "b = ";
-        cin>>y;
-        cout << "c = ";
-        cin>>z;
-        cout << "d = ";
-        cin>>t;
-        cout << "e = ";
-        cin>>o;
-        vector<double> res = polynome4(x,y, z, t,o);
-        if(res.size() != 0) {
-            cout << "Il y a " << res.size() << " solutions dans R :" << endl;
-            for(double i = 0; i < res.size();i++)
-            {
-                cout << "x" << i+1 << " = " << res[i] << endl;
-            }
-        }
-        else{
-            cout << "Pas de solution dans R" << endl;
-        }
-    }
-	return 0;
-}
-
-vector<double> polynome3(double a,double b,double c, double d)
-{   
-    std::vector<double> result;
-    b /= a;
-    c /= a;
-    d /= a;
-    
-    double disc, q, r, dum1, s, t, term1, r13;
-    q = (3.0*c - (b*b))/9.0;
-    r = -(27.0*d) + b*(9.0*c - 2.0*(b*b));
-    r /= 54.0;
-    disc = q*q*q + r*r;
-    term1 = (b/3.0);
-    
-    double x1, x2, x3;
-
-    if (disc > 0)   // One root real, two are complex
-    {
-        s = r + sqrt(disc);
-        s = s<0 ? -cbrt(-s) : cbrt(s);
-        t = r - sqrt(disc);
-        t = t<0 ? -cbrt(-t) : cbrt(t);
-        x1 = -term1 + s + t;
-        result.push_back(x1);
-        return result;
-    } 
-    // The remaining options are all real
-    else if (disc == 0)  // All roots real, at least two are equal.
-    { 
-        r13 = r<0 ? -cbrt(-r) : cbrt(r);
-        x1 = -term1 + 2.0*r13;
-        x3 = x2 = -(r13 + term1);
-    }
-    // Only option left is that all roots are real and unequal (to get here, q < 0)
-    else
-    {
-        q = -q;
-        dum1 = q*q*q;
-        dum1 = acos(r/sqrt(dum1));
-        r13 = 2.0*sqrt(q);
-        x1 = -term1 + r13*cos(dum1/3.0);
-        x2 = -term1 + r13*cos((dum1 + 2.0*M_PI)/3.0);
-        x3 = -term1 + r13*cos((dum1 + 4.0*M_PI)/3.0);
-    }
-    
-    result.push_back(x1);
-    result.push_back(x2);
-    result.push_back(x3);
-    return result;
-}
-
-vector<double> polynome4(double a,double b,double c, double d, double e){
-   
-    vector<double> result;
-    double x1,x2,x3,x4;
-
-    if(a == 0) return polynome3(b,c,d,e);
-
-    double A = (-3*b*b)/(8*a*a) + c/a;
-    double B = pow(b,3)/(8*a*a*a) - (b*c)/(2*a*a) + d/a;
-    double C = - (3*b*b*b*b)/(256*a*a*a*a) + (c*b*b)/(16*a*a*a) - (d*b)/(4*a*a) + e/a;
-
-    if(B == 0){
-        double delta = A*A - 4*C;
-
-        if(delta>0)
-        {
-            double Y1=(-1*A+sqrt(delta))/2;
-            double Y2=(-1*A-sqrt(delta))/2;
-
-            if(Y1 > 0){
-                
-                x1 = sqrt(Y1) - ((b)/(4*a));
-                x2 = -sqrt(Y1) - ((b)/(4*a));
-
-            } else if (Y1 == 0){
-                
-                x1=x2 = - ((b)/(4*a));
-            
-            }
-
-            if (Y2 > 0)
-            {
-                x3 = sqrt(Y2) - ((b)/(4*a));
-                x4 = -sqrt(Y2) - ((b)/(4*a));
-            
-            } else if (Y2 == 0){
-                
-                x3=x4 = - ((b)/(4*a));
-            
-            }
-
-            if (Y1 < 0 && Y2 < 0){
-                cout << "Pas de solution dans R. " << endl;
-            }
-
-            result.push_back(x1);
-            result.push_back(x2);
-            result.push_back(x3);
-            result.push_back(x4);
-
-            return result;
-            // 4 solutions pour x
-        }
-        else if(delta==0)
-        {   
-            double Y = -A/2;
-
-            if( Y > 0){
-                x1 = x2 = sqrt(Y) - ((b)/(4*a));
-                x3 = x4 = -sqrt(Y) - ((b)/(4*a));
-            } else if (Y == 0) {
-                x1 = x2 = x3 = x4 = - ((b)/(4*a));
-            }
-            else {
-                cout << "Pas de solution dans R. " << endl;
-            }
-            result.push_back(x1);
-            result.push_back(x2);
-            result.push_back(x3);
-            result.push_back(x4);
-
-            return result;
-            // 2 solutions pour x
-        }
-        else {
-            cout << "Pas de solution dans R. " << endl;
-        }
-    }
-
-    if (B != 0){
-        double lambda = polynome3(8,-4*A, -8*C, 4*A*C - B*B)[0];
-
-        double x1 = (-sqrt(2*lambda-A) + sqrt(-2*lambda - A + (2*B)/(sqrt(2*lambda - A))))/2 - ((b)/(4*a));
-        double x2 = (-sqrt(2*lambda-A) - sqrt(-2*lambda - A + (2*B)/(sqrt(2*lambda - A))))/2 - ((b)/(4*a));
-        double x3 = (sqrt(2*lambda-A) + sqrt(-2*lambda - A - (2*B)/(sqrt(2*lambda - A))))/2 - ((b)/(4*a));
-        double x4 = (sqrt(2*lambda-A) - sqrt(-2*lambda - A - (2*B)/(sqrt(2*lambda - A))))/2 - ((b)/(4*a));
-        
-        if(!isnan(x1))
-            result.push_back(x1);
-        if(!isnan(x2))
-            result.push_back(x2);
-        if(!isnan(x3))
-            result.push_back(x3);
-        if(!isnan(x4))
-            result.push_back(x4);
-    }
-    return result;
+    return 0;
 }

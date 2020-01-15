@@ -1,33 +1,3 @@
-
-# CFLAGS=$(HDR_PATHS) -Wno-deprecated
-
-# CC=g++ 
-# #CC=gcc
-
-# ok : projetMathbernstein 
-
-# .cc.o:
-# 	$(CC) -c -O3 $(CFLAGS) $<
-
-# OBJECTS_main = projetMathbernstein.o
-
-# projetMathbernstein:  $(OBJECTS_main)
-# 	$(CC) $(OBJECTS_main) -o projetMathbernstein $(LIB_PATHS) $(LIBS)
-
-	
-# indenter :
-# 	for i in *.h *.cpp do sed -i~ -f sed.sed  $i done
-# 	indent  *.h *.cpp
-
-# clean :
-# 	rm -fr *.o
-# #	touch *.cpp *.h
-
-# delete :
-# 	rm -f *.h~
-# 	rm -f *.cc~
-# 	rm -f *.txt
-
 # Generic Makefile with automatic dependencies management
 
 # Choose your compiler g++/clang++
@@ -37,7 +7,7 @@ DEPFLAGS   = -MMD
 LDFLAGS    = 
 # Replace your_files.cpp with the list of cpp files that need to be compiled
 # Ex: file1.cpp file2.cpp file3.cpp
-SRCS       = Polynome.cpp Bernstein.cpp main.cpp
+SRCS       = Polynome.cpp Bernstein.cpp main.cpp matrice.cpp methodeUsuelle.cpp
 OBJS       = $(SRCS:.cpp=.o)
 # Replace your_app with the name you want to give to your executable file
 TARGET     = main 
