@@ -17,7 +17,8 @@ vector<vector<double> > matriceReduite(vector<vector<double> > mat, int ligne, i
 
 	reduite.erase(reduite.begin()+ligne);
 
-	for(double i=0; i<reduite.size(); i++){
+	int size = reduite.size();
+	for(int i=0; i<size; i++){
 		reduite[i].erase(reduite[i].begin() + colonne);
 	}
 	
@@ -25,7 +26,8 @@ vector<vector<double> > matriceReduite(vector<vector<double> > mat, int ligne, i
 }
 
 bool estCarre(vector<vector<double> > matrice){
-	for(double i=0; i<matrice.size()-1; i++){ //on verifie si la matrice est carre ou pas
+	int size = matrice.size();
+	for(int i=0; i<size-1; i++){ //on verifie si la matrice est carre ou pas
 		if(matrice[i].size()!=matrice[i+1].size())
 			return false;
 	}
@@ -41,7 +43,7 @@ vector< vector<double> > getMinimo( vector< vector<double> > src, int I, int J, 
     int colCont = 0;
     if ( i != I ) { 
 
-      for ( int j=0; j < ordSrc; j++)
+      for (int j=0; j < ordSrc; j++)
       { 
         if ( j != J ) { 
           minimo[rowCont][colCont] = src[i][j];
@@ -83,8 +85,9 @@ double determinant(vector<vector<double> > matrice){
 vector<vector<double> > matriceTranslatee (vector<vector<double> > matrice){
 
 	vector<vector<double> > transl = matrice;
-	for(double i=0; i<matrice.size(); i++){
-		for(double j=0; j<matrice.size(); j++){
+	int size = matrice.size();
+	for(int i=0; i<size; i++){
+		for(int j=0; j<size; j++){
 			transl[j][i] = matrice[i][j];
 		}
 	}
@@ -93,8 +96,9 @@ vector<vector<double> > matriceTranslatee (vector<vector<double> > matrice){
 
 vector<vector<double> > comatrice (vector<vector<double> > matrice){
 	vector<vector<double> > comat = matrice;
-	for(double i=0; i<matrice.size(); i++){
-		for(double j=0; j<matrice.size(); j++){
+	int size = matrice.size();
+	for(int i=0; i<size; i++){
+		for(int j=0; j<size; j++){
 			comat[i][j]= pow(-1,i+j) *determinant(matriceReduite(matrice, i, j));
 		}
 	}
@@ -105,9 +109,10 @@ vector<vector<double> > matriceInverse(vector<vector<double> > matrice){
 	double det = determinant(matrice);
 	vector<vector<double> > matricecomat = comatrice(matrice);
 	vector<vector<double> > matriceT = matriceTranslatee(matricecomat);
+	int size = matriceT.size();
 	if(det != 0) {
-		for(double i=0; i<matriceT.size(); i++){
-			for(double j=0; j<matriceT.size(); j++){
+		for(int i=0; i<size; i++){
+			for(int j=0; j<size; j++){
 				matrice[i][j]= (1/det)*matriceT[i][j];
 			}
 		}

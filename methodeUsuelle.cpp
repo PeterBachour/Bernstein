@@ -1,17 +1,12 @@
 #include "methodeUsuelle.h"
 #define Pi 3.141592654
 
-
 vector<double> polynome3(vector<double> coeff){
     std::vector<double> result;
     double a = coeff[3];
-    double b = coeff[2];
-    double c = coeff[1];
-    double d = coeff[0];
-
-    b /= a;
-    c /= a;
-    d /= a;
+    double b = coeff[2]/a;
+    double c = coeff[1]/a;
+    double d = coeff[0]/a;
     
     double disc, q, r, dum1, s, t, term1, r13;
     q = (3.0*c - (b*b))/9.0;
@@ -21,8 +16,7 @@ vector<double> polynome3(vector<double> coeff){
     term1 = (b/3.0);
     
     double x1, x2, x3;
-
-    if (disc > 0)   // One root real, two are complex
+    if (disc > 0)
     {
         s = r + sqrt(disc);
         s = s<0 ? -cbrt(-s) : cbrt(s);
@@ -32,15 +26,13 @@ vector<double> polynome3(vector<double> coeff){
         result.push_back(x1);
         return result;
     } 
-    // The remaining options are all real
-    else if (disc == 0)  // All roots real, at least two are equal.
+    else if (disc == 0)  
     { 
         r13 = r<0 ? -cbrt(-r) : cbrt(r);
         x1 = -term1 + 2.0*r13;
         x3 = x2 = -(r13 + term1);
     }
-    // Only option left is that all roots are real and unequal (to get here, q < 0)
-    else
+    else 
     {
         q = -q;
         dum1 = q*q*q;

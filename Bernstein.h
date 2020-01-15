@@ -9,9 +9,9 @@
 #include <iostream>
 
 vector<double> canonicToBernstein(Polynome canonic);
-vector<vector<double> > PtsDeControle(vector<double> coeffDeBernstein, double imin, double imax);
+vector<vector<double> > PtsDeControle(vector<double> coeffDeBernstein);
 vector<double> ChangementIntervalle(vector<double> coeffCanonic, bool inverse, bool signe);
-vector<double> CastelJau(vector<vector<double> > PtsDeControles,  double precision,bool inverse, bool signe);
+vector<double> BezierCurve(vector<vector<double>> ptsDeControles, double precision, double inverse, bool negatif);
 vector<double> Bernstein(vector<double> v, double precision);
 
 #endif

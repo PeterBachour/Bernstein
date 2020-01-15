@@ -14,7 +14,9 @@ using namespace std;
 
 int main(){
 
-    cout << "Le but de code est la résolution, dans R, d'équations polynomiales de degré 3 à 5 en comparant" << endl <<"le solveur de Bernstein aux méthodes usuelles." << endl;
+	cout << endl;
+	cout << endl;
+    cout << "Le but de ce code est la résolution, dans R, d'équations polynomiales de degré 3 à 5 en comparant" << endl <<"le solveur de Bernstein aux méthodes usuelles." << endl;
     cout << "Code conçu par BACHOUR Peter et ATANGANA Oliver." << endl;
     double precision = 0;
 	double a =0,b=0,c=0,d=0,e=0,f=0;
@@ -30,6 +32,11 @@ int main(){
 
     cout << endl;
     while(testing){
+    	undo = true;
+    	first = true;
+    	tolerance = true;
+    	testing = false;
+    	otherTest = true;
         cout << "Veuillez choisir parmi les deux options ci-dessous:" << endl;
         cout << "1- Exemple pertinent." << endl;
         cout << "2- Tester le code à l'aide d'une saisie au clavier." << endl;
@@ -38,6 +45,15 @@ int main(){
         cout << endl;
         int d1 = choice.compare("1"); 
         int d2 = choice.compare("2"); 
+        while (d1 != 0 && d2 != 0){
+            cout << endl;
+            cout << "Veuillez choisir une option s'il vous plait:" << endl;
+            cout << "1- Exemple pertinent." << endl;
+        	cout << "2- Tester le code à l'aide d'une saisie au clavier." << endl;
+            cin >> degree;
+            d1 = degree.compare("1"); 
+            d2 = degree.compare("2");  
+        }
         if(d1 == 0){
             while(otherTest)
             {
@@ -53,6 +69,17 @@ int main(){
                 int t2 = choice.compare("2"); 
                 int t3 = choice.compare("3"); 
 
+                while (t1 != 0 && t2 != 0 && t3 != 0){
+		            cout << endl;
+		            cout << "Veuillez choisir une option s'il vous plait:" << endl;
+	                cout << "1- Vous voulez tester avec des exemples de degré 3" << endl;
+	                cout << "2- Vous voulez tester avec des exemples de degré 4" << endl;
+	                cout << "3- Vous voulez tester avec des exemples de degré 5" << endl;
+		            cin >> choice;
+	                t1 = choice.compare("1"); 
+					t2 = choice.compare("2"); 
+	                t3 = choice.compare("3");  
+	        	}
                 if(t1 == 0){
                     cout << "--> Exemple de degré 3 numero 1: " << endl;
                     cout << endl;
@@ -72,18 +99,19 @@ int main(){
                     v.push_back(a);
 
                     resUsuelle = polynome3(v); 
-                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    int size = resUsuelle.size();
+                    cout << "Il y a " << size << " solution(s) dans R pour votre équation." << endl;
                     cout << endl;
                     resBernstein = Bernstein(v, prec);
                     if(resBernstein.size() != 0){
                         cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
-                        for(double i = 0; i < resUsuelle.size();i++)
+                        for(int i = 0; i < size ;i++)
                         {
                             cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
                         }
                         cout << endl;
                         cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
-                        for(double i = 0; i < resBernstein.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resBernstein[i] << endl;
                         }
@@ -110,18 +138,19 @@ int main(){
                     v1.push_back(a);
 
                     resUsuelle = polynome3(v1); 
-                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    size = resUsuelle.size();
+                    cout << "Il y a " << size << " solution(s) dans R pour votre équation." << endl;
                     cout << endl;
                     resBernstein = Bernstein(v1, prec);
                     if(resBernstein.size() != 0){
                         cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
-                        for(double i = 0; i < resUsuelle.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
                         }
                         cout << endl;
                         cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
-                        for(double i = 0; i < resBernstein.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resBernstein[i] << endl;
                         }
@@ -151,18 +180,19 @@ int main(){
                     v.push_back(a);
 
                     resUsuelle = polynome4(v); 
-                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    int size = resUsuelle.size();
+                    cout << "Il y a " << size << " solution(s) dans R pour votre équation." << endl;
                     cout << endl;
                     resBernstein = Bernstein(v, prec);
                     if(resBernstein.size() != 0){
                         cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
-                        for(double i = 0; i < resUsuelle.size();i++)
+                        for(int i = 0; i < size ;i++)
                         {
                             cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
                         }
                         cout << endl;
                         cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
-                        for(double i = 0; i < resBernstein.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resBernstein[i] << endl;
                         }
@@ -191,18 +221,19 @@ int main(){
                     v1.push_back(a);
 
                     resUsuelle = polynome4(v1); 
-                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    size = resUsuelle.size();
+                    cout << "Il y a " << size << " solution(s) dans R pour votre équation." << endl;
                     cout << endl;
                     resBernstein = Bernstein(v1, prec);
                     if(resBernstein.size() != 0){
                         cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
-                        for(double i = 0; i < resUsuelle.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
                         }
                         cout << endl;
                         cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
-                        for(double i = 0; i < resBernstein.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resBernstein[i] << endl;
                         }
@@ -234,18 +265,19 @@ int main(){
                     v.push_back(a);
 
                     resUsuelle = polynome5(v); 
-                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    int size = resUsuelle.size();
+                    cout << "Il y a " << size << " solution(s) dans R pour votre équation." << endl;
                     cout << endl;
                     resBernstein = Bernstein(v, prec);
                     if(resBernstein.size() != 0){
                         cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
-                        for(double i = 0; i < resUsuelle.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
                         }
                         cout << endl;
                         cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
-                        for(double i = 0; i < resBernstein.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resBernstein[i] << endl;
                         }
@@ -276,18 +308,19 @@ int main(){
                     v1.push_back(a);
 
                     resUsuelle = polynome5(v1); 
-                    cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                    size = resUsuelle.size();
+                    cout << "Il y a " << size << " solution(s) dans R pour votre équation." << endl;
                     cout << endl;
                     resBernstein = Bernstein(v1, prec);
                     if(resBernstein.size() != 0){
                         cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
-                        for(double i = 0; i < resUsuelle.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
                         }
                         cout << endl;
                         cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
-                        for(double i = 0; i < resBernstein.size();i++)
+                        for(int i = 0; i < size;i++)
                         {
                             cout << "x" << i+1 << " = " << resBernstein[i] << endl;
                         }
@@ -352,8 +385,9 @@ int main(){
                     v.push_back(a);
 
                     while(tolerance){
-                        resUsuelle = polynome3(v); 
-                        cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                        resUsuelle = polynome3(v);  
+                        int size = resUsuelle.size();
+                        cout << "Il y a " << size << " solution(s) dans R pour votre équation." << endl;
                         cout << endl;
 
                         cout << endl << "Veuillez saisir la tolérance d'erreur que vous souhaitez:" << endl;
@@ -364,13 +398,13 @@ int main(){
 
                         if(resBernstein.size() != 0){
                             cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
-                            for(double i = 0; i < resUsuelle.size();i++)
+                            for(int i = 0; i < size;i++)
                             {
                                 cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
                             }
                             cout << endl;
                             cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
-                            for(double i = 0; i < resBernstein.size();i++)
+                            for(int i = 0; i < size;i++)
                             {
                                 cout << "x" << i+1 << " = " << resBernstein[i] << endl;
                             }
@@ -430,7 +464,8 @@ int main(){
 
                     while(tolerance){
                         resUsuelle = polynome4(v); 
-                        cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
+                        int size = resUsuelle.size();
+                        cout << "Il y a " << size << " solution(s) dans R pour votre équation." << endl;
                         cout << endl;
 
                         cout << endl << "Veuillez saisir la tolérance d'erreur que vous souhaitez:" << endl;
@@ -441,13 +476,13 @@ int main(){
 
                         if(resBernstein.size() != 0){
                             cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
-                            for(double i = 0; i < resUsuelle.size();i++)
+                            for(int i = 0; i < size;i++)
                             {
                                 cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
                             }
                             cout << endl;
                             cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
-                            for(double i = 0; i < resBernstein.size();i++)
+                            for(int i = 0; i < size;i++)
                             {
                                 cout << "x" << i+1 << " = " << resBernstein[i] << endl;
                             }
@@ -510,24 +545,24 @@ int main(){
 
                     while(tolerance){
                         resUsuelle = polynome5(v); 
-                        cout << "Il y a " << resUsuelle.size() << " solution(s) dans R pour votre équation." << endl;
-                        cout << endl;
-
                         cout << endl << "Veuillez saisir la tolérance d'erreur que vous souhaitez:" << endl;
                         cin>>precision;
                         cout << "Votre tolérance d'erreur est: " << precision << endl;
                         cout << endl;
                         resBernstein = Bernstein(v, precision);
+                        int size = resBernstein.size();
+                        cout << "Il y a " << size << " solution(s) dans R pour votre équation." << endl;
+                        cout << endl;
 
                         if(resBernstein.size() != 0){
                             cout << "Voici les solutions dans R avec la méthode usuelle:" << endl;
-                            for(double i = 0; i < resUsuelle.size();i++)
+                            for(int i = 0; i < size;i++)
                             {
                                 cout << "x" << i+1 << " = " << resUsuelle[i] << endl;
                             }
                             cout << endl;
                             cout << "Voici les solutions dans R avec la méthode de Bernstein:" << endl;
-                            for(double i = 0; i < resBernstein.size();i++)
+                            for(int i = 0; i < size;i++)
                             {
                                 cout << "x" << i+1 << " = " << resBernstein[i] << endl;
                             }
