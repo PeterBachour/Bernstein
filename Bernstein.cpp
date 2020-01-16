@@ -5,7 +5,7 @@ vector<double> canonicToBernstein(Polynome canonic){
 	vector<double> res;
 	vector<vector<double> > M;
 
-	for(int i=0; i<degree; i++){ //initialise la matrice a 0
+	for(int i=0; i<degree; i++){ 
 
 		vector<double> v;
 		for (int j = 0; j < degree; j++)
@@ -13,7 +13,7 @@ vector<double> canonicToBernstein(Polynome canonic){
 		M.push_back(v);
 	}
 
-	for(int i=0; i<degree; i++){ //on ajoute les coefficients 
+	for(int i=0; i<degree; i++){ 
 		for(int j=0; j<degree; j++){
 			if(i>=j)
 				M[i][j]=coeffBinomial(j,degree-1)*coeffBinomial(i-j,degree-j-1)*pow(-1,i-j);

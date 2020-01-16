@@ -7,10 +7,10 @@ using namespace std;
 
 class Polynome{
 private: 
-	vector<double> m_coefficients; //coefficients du polynome, on commence par le degree le plus bas
-	int m_degree; //degree du polynome
+	vector<double> m_coefficients; 
+	int m_degree; 
 public:
-	Polynome(vector<double> t_coefficients); //constructeur de base
+	Polynome(vector<double> t_coefficients); 
 	//getters
 	vector<double> getCoefficients();
 	int getDegree();

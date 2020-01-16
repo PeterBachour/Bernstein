@@ -224,7 +224,6 @@ double newton(double polynome[6], int degree, double x0)
         }
     } while((Pverif > 1.0 && Pverif2 >= 0) && n < 10000);
 
-    // printf("P = %lf\r\nP2 = %lf\r\nx%i = %lf\r\n\n", P, P2, n, xi);
     return xi;
 }
 vector<double> polynome5(vector<double> coeff)
@@ -237,7 +236,7 @@ vector<double> polynome5(vector<double> coeff)
     double e = coeff[1];
     double f = coeff[0];
     vector<double> result;
-    // Division des coefficients par a si a != 1
+
     if(a != 1.0)
     {
         b /= a;
@@ -252,7 +251,7 @@ vector<double> polynome5(vector<double> coeff)
     x0 = newton(equation, 5, 0.5);
 
     double polynome[5];
-    /* Factorisation par la méthode de Horner */
+
     polynome[4] = a ;
     polynome[3] = b + polynome[4] * x0;
     polynome[2] = c + polynome[3] * x0;

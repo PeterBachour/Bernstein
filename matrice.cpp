@@ -27,7 +27,7 @@ vector<vector<double> > matriceReduite(vector<vector<double> > mat, int ligne, i
 
 bool estCarre(vector<vector<double> > matrice){
 	int size = matrice.size();
-	for(int i=0; i<size-1; i++){ //on verifie si la matrice est carre ou pas
+	for(int i=0; i<size-1; i++){ 
 		if(matrice[i].size()!=matrice[i+1].size())
 			return false;
 	}
@@ -73,7 +73,6 @@ double calcDet(vector< vector<double> > src, double ord) {
       if ( (J % 2) == 0 ) { det += src[0][J] * calcDet( min, ord-1); }
       else { det -= src[0][J] * calcDet( min, ord-1); }
     };
-    // cout << "det" << det << endl;
     return det;
   }
 }
